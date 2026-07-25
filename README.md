@@ -104,7 +104,9 @@ The phone number is E.164 with the leading `+` URL-encoded as `%2B`.
 
 ## Designed for AI agents
 
-Telebase is built API-first for agent workflows. Each query is stateless, low-latency and returns structured JSON, so it drops into any agent pipeline, whether that's LangChain, a custom orchestration layer or a proprietary fraud engine.
+Telebase is built API-first for agent workflows. Each query is stateless, low-latency and returns structured JSON.
+
+Today, Telebase is built for Claude Code: point it at the API reference below and it can query Telebase directly, no SDK required. A native MCP server is on the roadmap, which will let any MCP-compatible client connect to Telebase without a custom integration.
 
 A typical agent workflow looks like:
 
