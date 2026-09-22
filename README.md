@@ -124,5 +124,3 @@ For an overview of what phone number intelligence is and how these signals fit a
 If you're building a fraud or compliance system and want to discuss integration, reach out directly.
 
 ---
-
-*Built by a team with seven years of carrier-side telecom infrastructure experience.*
