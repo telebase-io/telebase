@@ -2,28 +2,21 @@
 
 **Telecom Intelligence for AI Agents.**
 
-Telebase is a per-query API for carrier and number intelligence, built for fraud and compliance systems that need a telecom signal at decision time, not a batch report. One call returns whether a number is active, which carrier it sits on, its country and its number type, in structured JSON that an agent can act on without a human in the loop.
-
-SIM swap detection is our next signal and is currently in early access. See [SIM swap detection](#sim-swap-detection-early-access) below.
+Telebase is a per-query API for carrier and number intelligence, built for fraud and compliance systems that need a telecom signal at decision time, not a batch report. One call returns whether a number is active, which carrier it sits on, its country, its number type and whether its SIM has been recently swapped, in structured JSON that an agent can act on without a human in the loop.
 
 ---
 
-## What's live today
+## Signals
 
-| Signal | Description |
-|---|---|
-| Active status | Whether a number is currently reachable on the carrier network |
-| Carrier | The network operator a number belongs to, checked in real time |
-| Country | ISO 3166-1 country code for the number |
-| Number type | mobile, landline, fixedVoip, nonFixedVoip, tollFree or voicemail |
+| Signal | Field | Description |
+|---|---|---|
+| Active status | `active` | Whether a number is currently reachable on the carrier network |
+| Carrier | `carrier` | The network operator serving the number, checked in real time |
+| Country | `country` | ISO 3166-1 alpha-2 country code |
+| Number type | `numberType` | `mobile`, `landline`, `fixedVoip`, `nonFixedVoip`, `tollFree` or `voicemail` |
+| SIM swap | `simSwap` | Whether the SIM behind the number was recently changed. `SWAPPED`, `NO_SWAP` or `UNKNOWN` |
 
-Every signal above comes back from a single call.
-
-## SIM swap detection (early access)
-
-SIM swap is wired into the API and returns a real `simSwap` field: `SWAPPED`, `NO_SWAP` or `UNKNOWN`. In our current markets (GB, DE, NL, FR) it returns `UNKNOWN` while carrier registration completes in each market. We're not shipping fabricated swap results in the meantime, so today's response is the honest one.
-
-[Request early access](https://telebase.io/contact-us) to be notified when SIM swap detection goes live in your market.
+Every signal comes back from a single call.
 
 ---
 
@@ -53,14 +46,7 @@ You don't need to run your own carrier registration and use case review with eac
 
 ## Coverage
 
-Current markets:
-
-- Great Britain (GB)
-- Netherlands (NL)
-- France (FR)
-- Germany (DE)
-
-Expanding to further European markets. [Contact us](https://telebase.io/contact-us) if you need a specific market prioritised.
+Carrier, number type and active status work globally. SIM swap detection is available in GB and DE and expanding to further European markets. [Contact us](https://telebase.io/contact-us) if you need a specific market prioritised.
 
 ---
 
@@ -88,7 +74,7 @@ The phone number is E.164 with the leading `+` URL-encoded as `%2B`.
   "carrier": "EE",
   "country": "GB",
   "numberType": "mobile",
-  "simSwap": "UNKNOWN",
+  "simSwap": false,
   "simSwapAt": null,
   "_meta": { "activeSource": "LINE_STATUS" }
 }
@@ -106,13 +92,13 @@ The phone number is E.164 with the leading `+` URL-encoded as `%2B`.
 
 Telebase is built API-first for agent workflows. Each query is stateless, low-latency and returns structured JSON.
 
-Today, Telebase is built for Claude Code: point it at the API reference below and it can query Telebase directly, no SDK required. A native MCP server is on the roadmap, which will let any MCP-compatible client connect to Telebase without a custom integration.
+Today, Telebase works with Claude Code: point it at the API reference below and it can query Telebase directly, no SDK required. A native MCP server is on the roadmap, which will let any MCP-compatible client connect to Telebase without a custom integration.
 
-A typical agent workflow looks like:
+A typical agent workflow:
 
 1. User initiates a high-risk action (withdrawal, password reset, account change).
 2. Agent calls Telebase with the user's registered phone number.
-3. Telebase returns carrier, number type and active status in real time (SIM swap status once early access opens in your market).
+3. Telebase returns carrier, number type, active status and SIM swap status in real time.
 4. Agent uses the signal as part of its risk scoring decision.
 
 No human in the loop required.
@@ -122,6 +108,8 @@ No human in the loop required.
 ## Documentation
 
 Full API reference and response field definitions: [telebase.io/skills-md](https://telebase.io/skills-md).
+
+For an overview of what phone number intelligence is and how these signals fit a fraud or KYC stack, see [What is phone number intelligence?](https://telebase.io/what-is-phone-number-intelligence).
 
 ---
 
@@ -133,8 +121,8 @@ Full API reference and response field definitions: [telebase.io/skills-md](https
 - LinkedIn: [Telebase on LinkedIn](https://www.linkedin.com/company/telebase/)
 - X / Twitter: [@telebase_io](https://x.com/telebase_io)
 
-If you're building a fraud or compliance system and want to discuss early access or a custom integration, reach out directly.
+If you're building a fraud or compliance system and want to discuss integration, reach out directly.
 
 ---
 
-*Telebase is built by a team with years of telco infrastructure experience.*
+*Built by a team with seven years of carrier-side telecom infrastructure experience.*
